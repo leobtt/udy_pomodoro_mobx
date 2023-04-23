@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:udy_promodoro_mobx/store/pomodoro.store.dart';
 
 class EntryTime extends StatelessWidget {
   final String title;
   final int value;
+  final void Function()? inc;
+  final void Function()? dec;
 
   const EntryTime({
     Key? key,
     required this.title,
     required this.value,
+    this.inc,
+    this.dec,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    PomodoroStore store = Provider.of<PomodoroStore>(context);
     return Column(
       children: [
         Text(
@@ -25,11 +32,11 @@ class EntryTime extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: dec,
               style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(15),
-                backgroundColor: Colors.red,
+                backgroundColor: store.isWorking() ? Colors.red : Colors.green,
               ),
               child: const Icon(
                 Icons.arrow_downward,
@@ -38,16 +45,16 @@ class EntryTime extends StatelessWidget {
             ),
             Text(
               '$value min',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: inc,
               style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(15),
-                backgroundColor: Colors.red,
+                backgroundColor: store.isWorking() ? Colors.red : Colors.green,
               ),
               child: const Icon(
                 Icons.arrow_upward,
@@ -55,9 +62,6 @@ class EntryTime extends StatelessWidget {
               ),
             ),
           ],
-        ),
-        Text(
-          value.toString(),
         ),
       ],
     );
